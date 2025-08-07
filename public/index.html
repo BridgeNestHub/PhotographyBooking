@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Professional photography services by Aman Photography. Specializing in weddings, portraits, and events. Book your session today.">
+    <title>Ami Photography | Professional Portrait & Wedding Photographer</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <a href="index.html">Ami<span>Photography</span></a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="book-now.html">Book Now</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="book-now.html#booking" class="cta-link">Contact</a></li>
+            </ul>
+            <div class="hamburger">
+                <div class="line"></div>
+                <div class="line"></div>
+                <div class="line"></div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- <section class="hero">
+        <div class="hero-content">
+            <h1>Capturing Life's Precious Moments</h1>
+            <p class="subtitle">Professional photography with an artistic touch</p>
+            <div class="hero-buttons">
+                <a href="book-now.html" class="btn btn-primary">Book a Session</a>
+                <a href="#gallery" class="btn btn-secondary">View Portfolio</a>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <span></span>
+        </div>
+    </section> -->
+
+    <section class="hero">
+        <div class="hero-slideshow">
+            <div class="slide active" style="background-image: url('images/seattle1.jpg');"></div>
+            <div class="slide" style="background-image: url('images/pikeplacemarket.jpg');"></div>
+            <div class="slide" style="background-image: url('images/pic23.jpg');"></div>
+            <div class="slide" style="background-image: url('images/mountRainer.jpg');"></div>
+          </div>
+          
+        <div class="hero-content">
+            <h1>Capturing Life's Precious Moments</h1>
+            <p class="subtitle">Professional photography with an artistic touch</p>
+            <div class="hero-buttons">
+                <a href="book-now.html" class="btn btn-primary">Book a Session</a>
+                <a href="#gallery" class="btn btn-secondary">View Portfolio</a>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <span></span>
+        </div>
+    </section>
+
+    <section class="services" aria-labelledby="services-heading">
+        <div class="container">
+            <h2 id="services-heading">Our Photography Services</h2>
+            <p class="section-intro">We specialize in creating timeless imagery that tells your unique story with authenticity and artistry.</p>
+            
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-ring"></i>
+                    </div>
+                    <h3>Wedding Photography</h3>
+                    <p>Beautiful documentation of your special day with a blend of candid and posed shots.</p>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <h3>Portrait Sessions</h3>
+                    <p>Professional portraits that capture your personality and essence.</p>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                    <h3>Event Coverage</h3>
+                    <p>Comprehensive photography for all your important events and celebrations.</p>
+                </div>
+            </div>
+            
+            <div class="full-service-list">
+                <h4>Additional Services:</h4>
+                <ul>
+                    <li><i class="fas fa-check"></i> Engagement Sessions</li>
+                    <li><i class="fas fa-check"></i> Maternity Photography</li>
+                    <li><i class="fas fa-check"></i> Family Portraits</li>
+                    <li><i class="fas fa-check"></i> Graduation Photos</li>
+                    <li><i class="fas fa-check"></i> Corporate Events</li>
+                    <li><i class="fas fa-check"></i> Product Photography</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section id="gallery" class="gallery" aria-labelledby="gallery-heading">
+        <div class="container">
+            <h2 id="gallery-heading">Our Portfolio</h2>
+            <p class="section-intro">Explore our recent work across different photography categories</p>
+            
+            <div class="gallery-filters">
+                <button onclick="filterGallery('all')" class="active" aria-label="Show all photos">All</button>
+                <button onclick="filterGallery('weddings')" aria-label="Filter wedding photos">Weddings</button>
+                <button onclick="filterGallery('portraits')" aria-label="Filter portrait photos">Portraits</button>
+                <button onclick="filterGallery('events')" aria-label="Filter event photos">Events</button>
+                <button onclick="filterGallery('family')" aria-label="Filter family photos">Family</button>
+                <button onclick="filterGallery('commercial')" aria-label="Filter commercial photos">Commercial</button>
+            </div>
+            
+            <div class="gallery-grid">
+                <!-- Sample images - replace with actual photos -->
+                <div class="gallery-item" data-category="weddings">
+                    <img src="images/wedding2.jpg" alt="Wedding couple dancing" loading="lazy">
+                    <div class="gallery-overlay">
+                        <h3>Wedding Photography</h3>
+                        <button onclick="openLightbox('images/wedding2')">View</button>
+                    </div>
+                </div>
+
+                <div class="gallery-item" data-category="events">
+                    <img src="images/show1.jpg" alt="Event crowd" loading="lazy">
+                    <div class="gallery-overlay">
+                        <h3>Event Coverage</h3>
+                        <button onclick="openLightbox('images/show1.jpg')">View</button>
+                    </div>
+                </div>
+
+                <div class="gallery-item" data-category="family">
+                    <img src="images/family3.jpg" alt="Happy family" loading="lazy">
+                    <div class="gallery-overlay">
+                        <h3>Family Portraits</h3>
+                        <button onclick="openLightbox('images/family3.jpg')">View</button>
+                    </div>
+                </div>
+
+                <div class="gallery-item" data-category="weddings">
+                    <img src="images/wedding3.jpg" alt="Wedding couple dancing" loading="lazy">
+                    <div class="gallery-overlay">
+                        <h3>Wedding Photography</h3>
+                        <button onclick="openLightbox('images/wedding3')">View</button>
+                    </div>
+                </div>
+
+                <div class="gallery-item" data-category="events">
+                    <img src="images/event2.jpg" alt="Event crowd" loading="lazy">
+                    <div class="gallery-overlay">
+                        <h3>Event Coverage</h3>
+                        <button onclick="openLightbox('images/event2.jpg')">View</button>
+                    </div>
+                </div>
+
+                <div class="gallery-item" data-category="weddings">
+                    <img src="images/wedding4.jpg" alt="Wedding couple dancing" loading="lazy">
+                    <div class="gallery-overlay">
+                        <h3>Wedding Photography</h3>
+                        <button onclick="openLightbox('images/wedding4')">View</button>
+                    </div>
+                </div>
+
+                <div class="gallery-item" data-category="events">
+                    <img src="images/carshow1.jpg" alt="Event crowd" loading="lazy">
+                    <div class="gallery-overlay">
+                        <h3>Event Coverage</h3>
+                        <button onclick="openLightbox('images/carshow1.jpg')">View</button>
+                    </div>
+                </div>
+                
+                <div class="gallery-item" data-category="portraits">
+                    <img src="images/portrait1.jpg" alt="Portrait" loading="lazy">
+                    <div class="gallery-overlay">
+                        <h3>Portrait Session</h3>
+                        <button onclick="openLightbox('images/portrait1.jpg')">View</button>
+                    </div>
+                </div>
+                
+                <div class="gallery-item" data-category="commercial">
+                    <img src="images/commercial3.jpg" alt="Product photography" loading="lazy">
+                    <div class="gallery-overlay">
+                        <h3>Commercial Product</h3>
+                        <button onclick="openLightbox('images/commercial3.jpg')">View</button>
+                    </div>
+                </div>
+
+                <div class="gallery-item" data-category="events">
+                    <img src="images/graduation2.jpg" alt="Event crowd" loading="lazy">
+                    <div class="gallery-overlay">
+                        <h3>Event Coverage</h3>
+                        <button onclick="openLightbox('images/graduation2.jpg')">View</button>
+                    </div>
+                </div>
+                
+                <div class="gallery-item" data-category="portraits">
+                    <img src="images/portrait2.jpg" alt="Portrait" loading="lazy">
+                    <div class="gallery-overlay">
+                        <h3>Portrait Session</h3>
+                        <button onclick="openLightbox('images/portrait2.jpg')">View</button>
+                    </div>
+                </div>
+
+                <div class="gallery-item" data-category="family">
+                    <img src="images/family2.jpg" alt="Happy family" loading="lazy">
+                    <div class="gallery-overlay">
+                        <h3>Family Portraits</h3>
+                        <button onclick="openLightbox('images/family2.jpg')">View</button>
+                    </div>
+                </div>
+
+                <!-- Add more gallery items here -->
+                <div class="gallery-item" data-category="events">
+                    <img src="images/event1.jpg" alt="Event crowd" loading="lazy">
+                    <div class="gallery-overlay">
+                        <h3>Event Coverage</h3>
+                        <button onclick="openLightbox('images/event1.jpg')">View</button>
+                    </div>
+                </div>
+
+                <div class="gallery-item" data-category="events">
+                    <img src="images/graduation1.jpg" alt="Event crowd" loading="lazy">
+                    <div class="gallery-overlay">
+                        <h3>Event Coverage</h3>
+                        <button onclick="openLightbox('images/graduation1.jpg')">View</button>
+                    </div>
+                </div>
+
+                <div class="gallery-item" data-category="family">
+                    <img src="images/family1.jpg" alt="Happy family" loading="lazy">
+                    <div class="gallery-overlay">
+                        <h3>Family Portraits</h3>
+                        <button onclick="openLightbox('images/family1.jpg')">View</button>
+                    </div>
+                </div>
+
+                <div class="gallery-item" data-category="commercial">
+                    <img src="images/commercial1.jpg" alt="Product photography" loading="lazy">
+                    <div class="gallery-overlay">
+                        <h3>Commercial Product</h3>
+                        <button onclick="openLightbox('images/commercial1.jpg')">View</button>
+                    </div>
+                </div>
+
+                <div class="gallery-item" data-category="portraits">
+                    <img src="images/portrait3.jpg" alt="Portrait" loading="lazy">
+                    <div class="gallery-overlay">
+                        <h3>Studio Portrait</h3>
+                        <button onclick="openLightbox('images/portrait3.jpg')">View</button>
+                    </div>
+                </div>
+
+                <div class="gallery-item" data-category="commercial">
+                    <img src="images/commercial2.jpg" alt="Product photography" loading="lazy">
+                    <div class="gallery-overlay">
+                        <h3>Commercial Product</h3>
+                        <button onclick="openLightbox('images/commercial2.jpg')">View</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="gallery-cta">
+                <a href="book-now.html" class="btn btn-primary">Book Your Session Today</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact-preview">
+        <div class="container">
+            <h2>Ready to Create Lasting Memories?</h2>
+            <p>Get in touch to discuss your photography needs and book your session.</p>
+            <a href="book-now.html" class="btn btn-primary">Contact Us</a>
+        </div>
+    </section>
+
+    <section class="instagram-feed">
+        <div class="container">
+          <h2>Follow Us on Instagram</h2>
+          <p class="section-intro">See our latest shoots and behind-the-scenes stories.</p>
+          <!-- LightWidget Instagram Feed -->
+          <script src="https://cdn.lightwidget.com/widgets/lightwidget.js"></script>
+          <iframe src="http://lightwidget.com/widgets/953e27a5585557db84a65fea0fd279ca.html" scrolling="no" allowtransparency="true" class="lightwidget-widget" style="width:100%;border:0;overflow:hidden;"></iframe>
+        </div>
+      </section>
+      
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-about">
+                <h3>Aman Photography</h3>
+                <p>Capturing life's most precious moments with artistry and passion.</p>
+            </div>
+            
+            <div class="footer-links">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="book-now.html">Book Now</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="#gallery">Portfolio</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-contact">
+                <h4>Contact</h4>
+                <ul>
+                    <li><i class="fas fa-phone"></i> (123) 456-7890</li>
+                    <li><i class="fas fa-envelope"></i> contact@amanphotography.com</li>
+                    <li><i class="fas fa-map-marker-alt"></i> 123 Photo St, Your City</li>
+                </ul>
+            </div>
+            
+            <div class="footer-social">
+                <h4>Follow Us</h4>
+                <div class="social-icons">
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://www.instagram.com/amanphotography" aria-label="Instagram"><i class="fab fa-instagram"></i></a>                    <a href="#" aria-label="Pinterest"><i class="fab fa-pinterest-p"></i></a>
+                    <a href="#" aria-label="Pinterest"><i class="fab fa-pinterest-p"></i></a>
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2025 Aman Photography. All rights reserved.</p>
+            <!-- Add actual links to privacy policy pages -->
+            <p><a href="privacy.html">Privacy Policy</a> | <a href="terms.html">Terms of Service</a></p>
+        </div>
+    </footer>
+
+    <div id="lightbox" class="lightbox" aria-hidden="true">
+        <span class="close" onclick="closeLightbox()" tabindex="0" aria-label="Close lightbox">×</span>
+        <img id="lightbox-img" src="" alt="">
+        <div class="lightbox-nav">
+            <button class="prev" onclick="navigateLightbox(-1)" aria-label="Previous image">❮</button>
+            <button class="next" onclick="navigateLightbox(1)" aria-label="Next image">❯</button>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.hero-slideshow .slide');
+      
+        function changeSlide() {
+          slides[currentSlide].classList.remove('active');
+          currentSlide = (currentSlide + 1) % slides.length;
+          slides[currentSlide].classList.add('active');
+        }
+      
+        setInterval(changeSlide, 5000); // 5000 milliseconds = 5 seconds
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+          const hamburger = document.querySelector(".hamburger");
+          const navLinks = document.querySelector(".nav-links");
+      
+          if (hamburger && navLinks) {
+            hamburger.addEventListener("click", function () {
+              navLinks.classList.toggle("active");
+            });
+          }
+      
+          const contactLink = document.querySelector('a[href="#contact"]');
+          const contactSection = document.getElementById("contact");
+      
+          if (contactLink && contactSection) {
+            contactLink.addEventListener("click", function (e) {
+              e.preventDefault();
+              contactSection.scrollIntoView({ behavior: "smooth" });
+      
+              // Close mobile nav menu if open
+              navLinks.classList.remove("active");
+              hamburger.classList.remove("active");
+              document.body.style.overflow = "";
+            });
+          }
+        });
+    </script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (window.matchMedia('(max-width: 768px)').matches) {
+        const cards = document.querySelectorAll('.service-card');
+        let current = 0;
+  
+        // Set initial styles for all cards
+        cards.forEach((card, i) => {
+          card.style.position = 'absolute';
+          card.style.top = '0';
+          card.style.left = '0';
+          card.style.width = '100%';
+          card.style.height = '100%';
+          card.style.transition = 'transform 0.8s ease, opacity 0.8s ease';
+          card.style.zIndex = cards.length - i;
+        });
+  
+        function showNextCard() {
+          const total = cards.length;
+          const currentCard = cards[current];
+  
+          // Slide out current card to right and fade out
+          currentCard.style.transform = 'translateX(100%) rotate(20deg)';
+          currentCard.style.opacity = '0';
+  
+          setTimeout(() => {
+            currentCard.style.transition = 'none';
+            currentCard.style.transform = 'translateX(0) rotate(0deg)';
+            currentCard.style.opacity = '1';
+  
+            // Move current card to the end of parent container
+            currentCard.parentNode.appendChild(currentCard);
+  
+            // Force reflow and re-enable transition
+            requestAnimationFrame(() => {
+              requestAnimationFrame(() => {
+                currentCard.style.transition = 'transform 0.8s ease, opacity 0.8s ease';
+  
+                // Reset z-index for all cards
+                const updatedCards = document.querySelectorAll('.service-card');
+                updatedCards.forEach((card, i) => {
+                  card.style.zIndex = updatedCards.length - i;
+                });
+              });
+            });
+          }, 800);
+  
+          current = (current + 1) % total;
+        }
+  
+        // Start slideshow every 2.5 seconds
+        setInterval(showNextCard, 2500);
+      }
+    });
+  </script>
+      
+</body>
+</html>

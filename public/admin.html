@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Aman Photography</title>
+    <meta http-equiv="Content-Security-Policy" content="
+        default-src 'self';
+        script-src 'self' https://cdnjs.cloudflare.com 'unsafe-inline';
+        style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com;
+        font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com;
+        img-src 'self' data: blob:;
+        connect-src 'self' http://localhost:3000;
+    ">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <style>
+        .hidden {
+            display: none !important;
+        }
+
+        .loading-row {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .loading-content {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        /* Additional styles for active nav, loading states */
+        .nav-link.active {
+            background: rgba(255,255,255,0.1);
+            border-left: 3px solid #4e73ff;
+        }
+        .loading-row td {
+            text-align: center;
+            padding: 2rem;
+        }
+        .empty-state, .error-state {
+            text-align: center;
+            padding: 3rem;
+            color: #6c757d;
+        }
+        .empty-state i, .error-state i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+        .btn-retry {
+            margin-top: 1rem;
+        }
+    </style>
+
+<style>
+    /* Modal Styles */
+    .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+    }
+    
+    .modal-overlay.hidden {
+        display: none !important;
+    }
+    
+    .modal-container {
+        background: white;
+        border-radius: 8px;
+        max-width: 600px;
+        width: 90%;
+        max-height: 80vh;
+        overflow-y: auto;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+    
+    .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1.5rem;
+        border-bottom: 1px solid #e9ecef;
+        background: #f8f9fa;
+        border-radius: 8px 8px 0 0;
+    }
+    
+    .modal-header h3 {
+        margin: 0;
+        color: #2c3e50;
+        font-size: 1.25rem;
+    }
+    
+    .close-modal {
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: #6c757d;
+        padding: 0.5rem;
+        border-radius: 50%;
+        transition: all 0.3s ease;
+    }
+    
+    .close-modal:hover {
+        background: #e9ecef;
+        color: #495057;
+    }
+    
+    .modal-body {
+        padding: 1.5rem;
+    }
+    
+    .modal-row {
+        display: flex;
+        margin-bottom: 1rem;
+        align-items: flex-start;
+    }
+    
+    .modal-row.full-width {
+        flex-direction: column;
+    }
+    
+    .modal-label {
+        font-weight: 600;
+        color: #495057;
+        min-width: 120px;
+        margin-right: 1rem;
+    }
+    
+    .modal-row.full-width .modal-label {
+        margin-bottom: 0.5rem;
+    }
+    
+    .modal-row p {
+        margin: 0;
+        line-height: 1.6;
+        color: #6c757d;
+    }
+    
+    .modal-footer {
+        display: flex;
+        justify-content: flex-end;
+        gap: 1rem;
+        padding: 1.5rem;
+        border-top: 1px solid #e9ecef;
+        background: #f8f9fa;
+        border-radius: 0 0 8px 8px;
+    }
+    
+    .modal-footer .btn {
+        min-width: 100px;
+    }
+    
+    /* Responsive modal */
+    @media (max-width: 768px) {
+        .modal-container {
+            width: 95%;
+            max-height: 90vh;
+        }
+        
+        .modal-header,
+        .modal-body,
+        .modal-footer {
+            padding: 1rem;
+        }
+        
+        .modal-row {
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        
+        .modal-label {
+            min-width: auto;
+            margin-right: 0;
+        }
+    }
+    </style>
+</head>
+<body class="admin-dashboard">
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="loading-overlay">
+        <div class="loading-spinner">
+            <i class="fas fa-camera fa-spin"></i>
+            <span>Initializing Admin Panel...</span>
+        </div>
+    </div>
+
+    <header class="admin-header hidden">
+        <div class="container">
+            <h1>
+                <i class="fas fa-camera"></i>
+                <span>Ami Photography</span>
+                <small>Admin Dashboard</small>
+                <span id="session-timer" class="session-timer">
+                    <i class="fas fa-clock"></i> <span id="session-time">30:00</span>
+                </span>
+            </h1>
+            <nav class="admin-nav">
+                <ul>
+                    <li><a href="#" class="nav-link" data-section="bookings"><i class="fas fa-calendar-check"></i> Bookings</a></li>
+                    <li><a href="#" class="nav-link" data-section="messages"><i class="fas fa-envelope"></i> Messages <span id="unread-count" class="badge hidden">0</span></a></li>
+                    <li><a href="#" id="logout" class="nav-link"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="admin-main">
+        <div class="container">
+            <!-- Login Section -->
+            <section id="login-section" class="admin-section">
+                <div class="login-container">
+                    <div class="login-header">
+                        <h2><i class="fas fa-lock"></i> Admin Login</h2>
+                        <div class="security-notice">
+                            <i class="fas fa-shield-alt"></i> Secure Access Only
+                        </div>
+                    </div>
+                    <form id="login-form">
+                        <input type="hidden" id="csrf-token" name="_csrf">
+                        <div class="form-group">
+                            <label for="username">
+                                <i class="fas fa-user"></i> Username
+                            </label>
+                            <input type="text" id="username" name="username" required autocomplete="username" autocapitalize="off">
+                        </div>
+                        <div class="form-group">
+                            <label for="password">
+                                <i class="fas fa-key"></i> Password
+                            </label>
+                            <div class="password-wrapper">
+                                <input type="password" id="password" name="password" required autocomplete="current-password">
+                                <button type="button" id="toggle-password" class="pwd-toggle" aria-label="Toggle password visibility">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary" id="login-btn">
+                            <i class="fas fa-sign-in-alt"></i> Login
+                        </button>
+                        <div id="login-message" class="form-message hidden"></div>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Bookings Section -->
+            <section id="bookings-section" class="admin-section hidden">
+                <div class="section-header">
+                    <h2><i class="fas fa-calendar-check"></i> Booking Management</h2>
+                    <div class="section-controls">
+                        <div class="filter-group">
+                            <label for="booking-filter"><i class="fas fa-filter"></i></label>
+                            <select id="booking-filter" class="form-select">
+                                <option value="all">All Bookings</option>
+                                <option value="pending">Pending</option>
+                                <option value="confirmed">Confirmed</option>
+                                <option value="cancelled">Cancelled</option>
+                            </select>
+                        </div>
+                        <button id="refresh-bookings" class="btn btn-secondary">
+                            <i class="fas fa-sync-alt"></i> Refresh
+                        </button>
+                        <button id="export-bookings" class="btn btn-success">
+                            <i class="fas fa-file-export"></i> Export
+                        </button>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="admin-table" id="bookings-table">
+                        <thead>
+                            <tr>
+                                <th>Client</th>
+                                <th>Event</th>
+                                <th>Date</th>
+                                <th>Package</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="bookings-list">
+                            <tr class="loading-row">
+                                <td colspan="6">
+                                    <div class="loading-content">
+                                        <i class="fas fa-spinner fa-spin"></i> Loading bookings...
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div id="bookings-empty" class="empty-state hidden">
+                    <i class="fas fa-calendar-times"></i>
+                    <h3>No bookings found</h3>
+                    <p>When you receive new bookings, they'll appear here.</p>
+                </div>
+                <div id="bookings-error" class="error-state hidden">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <h3>Error loading bookings</h3>
+                    <p>We couldn't load your bookings. Please try again.</p>
+                    <button class="btn btn-retry" id="retry-bookings">Retry</button>
+                </div>
+                <div class="table-footer">
+                    <div class="pagination" id="bookings-pagination"></div>
+                </div>
+            </section>
+
+            <!-- Messages Section -->
+            <section id="messages-section" class="admin-section hidden">
+                <div class="section-header">
+                    <h2><i class="fas fa-envelope"></i> Message Center</h2>
+                    <div class="section-controls">
+                        <div class="filter-group">
+                            <label for="message-filter"><i class="fas fa-filter"></i></label>
+                            <select id="message-filter" class="form-select">
+                                <option value="all">All Messages</option>
+                                <option value="unread">Unread</option>
+                                <option value="archived">Archived</option>
+                            </select>
+                        </div>
+                        <button id="refresh-messages" class="btn btn-secondary">
+                            <i class="fas fa-sync-alt"></i> Refresh
+                        </button>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="admin-table" id="messages-table">
+                        <thead>
+                            <tr>
+                                <th>From</th>
+                                <th>Subject</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="messages-list">
+                            <tr class="loading-row">
+                                <td colspan="5">
+                                    <div class="loading-content">
+                                        <i class="fas fa-spinner fa-spin"></i> Loading messages...
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div id="messages-empty" class="empty-state hidden">
+                    <i class="fas fa-inbox"></i>
+                    <h3>No messages found</h3>
+                    <p>When you receive new messages, they'll appear here.</p>
+                </div>
+                <div id="messages-error" class="error-state hidden">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <h3>Error loading messages</h3>
+                    <p>We couldn't load your messages. Please try again.</p>
+                    <button class="btn btn-retry" id="retry-messages">Retry</button>
+                </div>
+                <div class="table-footer">
+                    <div class="pagination" id="messages-pagination"></div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+        <!-- Booking/Message Modal -->
+        <div id="booking-modal" class="modal-overlay hidden">
+            <div class="modal-container">
+                <div class="modal-header">
+                    <h3 id="modal-title">Booking Details</h3>
+                    <button type="button" class="close-modal" aria-label="Close modal">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body" id="modal-body">
+                    <!-- Dynamic content will be inserted here -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="close-modal-btn" class="btn btn-secondary">
+                        <i class="fas fa-times"></i> Close
+                    </button>
+                    <button type="button" id="confirm-booking-btn" class="btn btn-primary hidden">
+                        <i class="fas fa-check"></i> Confirm Booking
+                    </button>
+                    <button type="button" id="cancel-booking-btn" class="btn btn-cancel hidden">
+                        <i class="fas fa-ban"></i> Cancel Booking
+                    </button>
+                    <button type="button" id="restore-booking-btn" class="btn btn-success hidden">
+                        <i class="fas fa-undo"></i> Restore Booking
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    <!-- System Notification -->
+    <div id="system-notification" class="system-notification hidden">
+        <div class="notification-content">
+            <span id="notification-message"></span>
+        </div>
+    </div>
+
+    <script src="js/admin.js" defer></script>
+</body>
+</html>

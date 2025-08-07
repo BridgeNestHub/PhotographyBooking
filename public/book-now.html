@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Your Photography Session | Aman Photography</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+
+        <!-- Tost notification styles -->
+        <style>
+            .toast-notification {
+              position: fixed;
+              top: 50%;
+              left: 50%;
+              transform: translate(-50%, -50%);
+              background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+              color: white;
+              padding: 30px;
+              border-radius: 15px;
+              box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+              max-width: 500px;
+              width: 90%;
+              text-align: center;
+              z-index: 10000;
+              opacity: 0;
+              visibility: hidden;
+              transition: all 0.5s ease;
+              backdrop-filter: blur(10px);
+              border: 1px solid rgba(255, 255, 255, 0.2);
+            }
+            
+            .toast-notification.show {
+              opacity: 1;
+              visibility: visible;
+              transform: translate(-50%, -50%) scale(1);
+            }
+            
+            .toast-notification h3 {
+              margin: 0 0 15px 0;
+              font-size: 1.4em;
+              font-weight: 600;
+            }
+            
+            .toast-notification p {
+              margin: 0 0 10px 0;
+              line-height: 1.6;
+              font-size: 1em;
+            }
+            
+            .toast-notification .toast-icon {
+              font-size: 3em;
+              margin-bottom: 15px;
+              color: #4CAF50;
+            }
+            
+            .toast-overlay {
+              position: fixed;
+              top: 0;
+              left: 0;
+              width: 100%;
+              height: 100%;
+              background: rgba(0, 0, 0, 0.5);
+              z-index: 9999;
+              opacity: 0;
+              visibility: hidden;
+              transition: all 0.3s ease;
+            }
+            
+            .toast-overlay.show {
+              opacity: 1;
+              visibility: visible;
+            }
+            
+            .toast-error {
+              background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            }
+            
+            .toast-error .toast-icon {
+              color: #fff;
+            }
+        </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <a href="index.html">Ami<span>Photography</span></a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="book-now.html" class="active">Book Now</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="about.html#contact" class="cta-link">Contact</a></li>
+            </ul>
+            <div class="hamburger">
+                <div class="line"></div>
+                <div class="line"></div>
+                <div class="line"></div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="booking-page">
+        <section class="booking-hero">
+            <div class="container">
+                <h1>Book Your Photography Session</h1>
+                <p class="subtitle">Let's create something beautiful together</p>
+            </div>
+        </section>
+
+        <div class="booking-container">
+            <section class="booking-form-section">
+                <div class="form-intro" id="booking">
+                    <h2>Schedule Your Session</h2>
+                    <p>Fill out the form below to request a booking. We'll respond within 24 hours to confirm availability.</p>
+                </div>
+
+                <form id="booking-form" class="booking-form" method="POST" action="/submit-booking">
+                    <input type="hidden" name="_csrf" value="">
+                    <div class="form-group two-column">
+                        <div class="form-field">
+                            <label for="name" class="required">Full Name*</label>
+                            <input type="text" id="name" name="name" required placeholder="Your full name" autocomplete="name">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="form-field">
+                            <label for="email" class="required">Email*</label>
+                            <input type="email" id="email" name="email" required placeholder="your@email.com" autocomplete="email">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                    </div>
+
+                    <div class="form-group two-column">
+                        <div class="form-field">
+                            <label for="phone" class="required">Phone Number*</label>
+                            <input type="tel" id="phone" name="phone" required placeholder="(123) 456-7890" autocomplete="tel">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <div class="form-field">
+                            <label for="event-type">Event Type*</label>
+                            <select id="event-type" name="eventType" required>
+                                <option value="">Select event type</option>
+                                <option value="wedding">Wedding</option>
+                                <option value="engagement">Engagement</option>
+                                <option value="portrait">Portrait</option>
+                                <option value="family">Family</option>
+                                <option value="maternity">Maternity</option>
+                                <option value="corporate">Corporate</option>
+                                <option value="other">Other</option>
+                            </select>
+                            <i class="fas fa-calendar-check"></i>
+                        </div>
+                    </div>
+
+                    <div class="form-group two-column">
+                        <div class="form-field">
+                            <label for="date">Event Date*</label>
+                            <input type="text" id="date" name="date" class="flatpickr-date" required placeholder="Select date" data-mindate="today">
+                            <i class="fas fa-calendar-day"></i>
+                        </div>
+                        <div class="form-field">
+                            <label for="package">Package*</label>
+                            <select id="package" name="package" required>
+                                <option value="">Select package</option>
+                                <option value="basic">Basic ($200)</option>
+                                <option value="standard">Standard ($500)</option>
+                                <option value="premium">Premium ($7000)</option>
+                                <option value="video">Video ($1000)</option>
+                                <option value="ultimate">Ultimate ($1300)</option>
+                                <option value="custom">Custom (Contact Us)</option>
+                            </select>
+                            <i class="fas fa-box-open"></i>
+                        </div>
+                    </div>
+
+                    <div class="form-group two-column">
+                        <div class="form-field">
+                            <label for="start-time">Start Time*</label>
+                            <input type="text" id="start-time" name="startTime" class="flatpickr-time" required placeholder="Select time">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="form-field">
+                            <label for="end-time">End Time*</label>
+                            <input type="text" id="end-time" name="endTime" class="flatpickr-time" required placeholder="Select time">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="form-field">
+                            <label for="location">Location*</label>
+                            <input type="text" id="location" name="location" required placeholder="Venue or address">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="form-field">
+                            <label for="details">Special Requests & Details</label>
+                            <textarea id="details" name="details" placeholder="Tell us about your event, special requests, or anything else we should know"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-submit">
+                        <button type="submit" class="btn btn-primary">
+                            <span class="default-text">Submit Booking Request</span>
+                            <span class="loading-text" style="display: none;"><i class="fas fa-spinner fa-spin"></i> Sending...</span>
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                        <p class="form-note">We'll contact you within 24 hours to confirm your booking.</p>
+                    </div>
+                </form>
+            </section>
+
+            <aside class="booking-sidebar">
+                <div class="sidebar-card">
+                    <h3><i class="fas fa-info-circle"></i> Booking Information</h3>
+                    <ul class="info-list">
+                        <li><i class="fas fa-check-circle"></i> 50% deposit required to secure date</li>
+                        <li><i class="fas fa-check-circle"></i> Balance due on event day</li>
+                        <li><i class="fas fa-check-circle"></i> Travel fees may apply beyond 30 miles</li>
+                        <li><i class="fas fa-check-circle"></i> Cancellation policy: 14 days notice</li>
+                    </ul>
+                </div>
+
+                <div class="sidebar-card">
+                    <h3><i class="fas fa-question-circle"></i> Need Help?</h3>
+                    <div class="contact-info">
+                        <p><i class="fas fa-phone"></i> <a href="tel:+11234567890">(123) 456-7890</a></p>
+                        <p><i class="fas fa-envelope"></i> <a href="mailto:bookings@amanphotography.com">bookings@amanphotography.com</a></p>
+                    </div>
+                    <p class="availability">Available Monday-Saturday, 9am-6pm</p>
+                </div>
+
+                <div class="sidebar-card">
+                    <h3><i class="fas fa-star"></i> Why Choose Us?</h3>
+                    <ul class="feature-list">
+                        <li><i class="fas fa-camera-retro"></i> Professional equipment</li>
+                        <li><i class="fas fa-user-tie"></i> Experienced photographers</li>
+                        <li><i class="fas fa-magic"></i> Premium editing</li>
+                        <li><i class="fas fa-heart"></i> Personalized service</li>
+                    </ul>
+                </div>
+            </aside>
+        </div>
+
+        <section class="pricing-section">
+            <div class="container">
+                <h2>Our Photography Packages</h2>
+                <p class="section-intro">Choose the package that best fits your needs, or <a href="#contact">contact us</a> for custom options.</p>
+                
+                <div class="pricing-grid">
+                    <div class="pricing-card">
+                        <div class="pricing-header">
+                            <h3>Basic</h3>
+                            <div class="price" div class="price">$500</div>
+                            <p class="duration">2-hour session</p>
+                        </div>
+                        <ul class="features">
+                            <li><i class="fas fa-check"></i> 50 high-res edited photos</li>
+                            <li><i class="fas fa-check"></i> Online gallery for 3 months</li>
+                            <li><i class="fas fa-check"></i> 1 location</li>
+                            <li><i class="fas fa-check"></i> 1 outfit change</li>
+                        </ul>
+                        <button class="btn btn-outline" onclick="scrollToForm()">Book This Package</button>
+                    </div>
+                    
+                    <div class="pricing-card featured">
+                        <div class="popular-badge">Most Popular</div>
+                        <div class="pricing-header">
+                            <h3>Standard</h3>
+                            <div class="price">$1000</div>
+                            <p class="duration">4-hour session</p>
+                        </div>
+                        <ul class="features">
+                            <li><i class="fas fa-check"></i> 100 high-res edited photos</li>
+                            <li><i class="fas fa-check"></i> Online gallery + USB drive</li>
+                            <li><i class="fas fa-check"></i> 2 locations</li>
+                            <li><i class="fas fa-check"></i> 3 outfit changes</li>
+                            <li><i class="fas fa-check"></i> 5 printed 8x10s</li>
+                        </ul>
+                        <button class="btn btn-primary" onclick="scrollToForm()">Book This Package</button>
+                    </div>
+                    
+                    <div class="pricing-card">
+                        <div class="pricing-header">
+                            <h3>Premium</h3>
+                            <div class="price">$2000</div>
+                            <p class="duration">8-hour session</p>
+                        </div>
+                        <ul class="features">
+                            <li><i class="fas fa-check"></i> 200 high-res edited photos</li>
+                            <li><i class="fas fa-check"></i> Online gallery + USB + album</li>
+                            <li><i class="fas fa-check"></i> Multiple locations</li>
+                            <li><i class="fas fa-check"></i> Unlimited outfit changes</li>
+                            <li><i class="fas fa-check"></i> 20 printed 8x10s</li>
+                            <li><i class="fas fa-check"></i> Priority scheduling</li>
+                        </ul>
+                        <button class="btn btn-outline" onclick="scrollToForm()">Book This Package</button>
+                    </div>
+                </div>
+                
+                <div class="custom-package">
+                    <h3>Need Something Custom?</h3>
+                    <p>We offer fully customized packages for special events, commercial work, and unique projects.</p>
+                    <a href="book-now.html#booking" class="btn btn-secondary">Request Custom Package</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-about">
+                <h3>Aman Photography</h3>
+                <p>Capturing life's most precious moments with artistry and passion.</p>
+            </div>
+            
+            <div class="footer-links">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="book-now.html">Book Now</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="#gallery">Portfolio</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-contact">
+                <h4>Contact</h4>
+                <ul>
+                    <li><i class="fas fa-phone"></i> (123) 456-7890</li>
+                    <li><i class="fas fa-envelope"></i> contact@amanphotography.com</li>
+                    <li><i class="fas fa-map-marker-alt"></i> 123 Photo St, Your City</li>
+                </ul>
+            </div>
+            
+            <div class="footer-social">
+                <h4>Follow Us</h4>
+                <div class="social-icons">
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="Pinterest"><i class="fab fa-pinterest-p"></i></a>
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2025 Aman Photography. All rights reserved.</p>
+            <p><a href="privacy.html">Privacy Policy</a> | <a href="terms.html">Terms of Service</a></p>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.js"></script>
+    <script>
+        // Initialize date picker
+        flatpickr(".flatpickr-date", {
+          dateFormat: 'Y-m-d',
+          minDate: 'today',
+          clickOpens: true
+        });
+      
+        // Initialize time picker
+        flatpickr(".flatpickr-time", {
+          enableTime: true,
+          noCalendar: true,
+          dateFormat: "h:i K",
+          time_24hr: false,
+          clickOpens: true
+        });
+      </script>
+      
+    <script src="js/main.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+          const hamburger = document.querySelector(".hamburger");
+          const navLinks = document.querySelector(".nav-links");
+      
+          if (hamburger && navLinks) {
+            hamburger.addEventListener("click", function () {
+              navLinks.classList.toggle("active");
+            });
+          }
+      
+          const contactLink = document.querySelector('a[href="#contact"]');
+          const contactSection = document.getElementById("contact");
+      
+          if (contactLink && contactSection) {
+            contactLink.addEventListener("click", function (e) {
+              e.preventDefault();
+              contactSection.scrollIntoView({ behavior: "smooth" });
+      
+              // Close mobile nav menu if open
+              navLinks.classList.remove("active");
+              hamburger.classList.remove("active");
+              document.body.style.overflow = "";
+            });
+          }
+        });
+    </script>
+
+    <script>
+        document.getElementById('booking-form').addEventListener('submit', function () {
+        const btn = this.querySelector('button[type="submit"]');
+        btn.querySelector('.default-text').style.display = 'none';
+        btn.querySelector('.loading-text').style.display = 'inline-block';
+        });
+    </script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize UI components
+            initDatePickers();
+            initMobileMenu();
+            initContactLink();
+            
+            // Initialize form with fallback CSRF handling
+            initFormWithCSRFFallback();
+        });
+        
+        // ========== UI Initialization ==========
+        function initDatePickers() {
+            flatpickr(".flatpickr-date", {
+                dateFormat: 'Y-m-d',
+                minDate: 'today',
+                clickOpens: true
+            });
+            
+            flatpickr(".flatpickr-time", {
+                enableTime: true,
+                noCalendar: true,
+                dateFormat: "h:i K",
+                time_24hr: false,
+                clickOpens: true
+            });
+        }
+        
+        function initMobileMenu() {
+            const hamburger = document.querySelector(".hamburger");
+            const navLinks = document.querySelector(".nav-links");
+            if (hamburger && navLinks) {
+                hamburger.addEventListener("click", function() {
+                    navLinks.classList.toggle("active");
+                });
+            }
+        }
+        
+        function initContactLink() {
+            const contactLink = document.querySelector('a[href="#contact"]');
+            const contactSection = document.getElementById("contact");
+            if (contactLink && contactSection) {
+                contactLink.addEventListener("click", function(e) {
+                    e.preventDefault();
+                    contactSection.scrollIntoView({ behavior: "smooth" });
+                    document.querySelector(".nav-links")?.classList.remove("active");
+                });
+            }
+        }
+        
+        // ========== Form Handling with CSRF Fallback ==========
+        function initFormWithCSRFFallback() {
+            const form = document.getElementById('booking-form');
+            if (!form) return;
+        
+            // Create CSRF token input if it doesn't exist
+            let csrfInput = form.querySelector('input[name="_csrf"]');
+            if (!csrfInput) {
+                csrfInput = document.createElement('input');
+                csrfInput.type = 'hidden';
+                csrfInput.name = '_csrf';
+                form.prepend(csrfInput);
+            }
+        
+            // Try to get CSRF token (but don't block form submission if it fails)
+            attemptCSRFTokenFetch()
+                .then(token => {
+                    if (token) {
+                        csrfInput.value = token;
+                    } else {
+                        showWarning(
+                            "Note: Enhanced security features temporarily unavailable. " +
+                            "You can still submit your booking request.",
+                            form
+                        );
+                        csrfInput.value = 'fallback-token-' + Date.now();
+                    }
+                })
+                .catch(error => {
+                    console.error('CSRF token fetch error:', error);
+                    csrfInput.value = 'fallback-token-' + Date.now();
+                });
+        
+            // Set up form submission
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const submitButton = form.querySelector('button[type="submit"]');
+                const defaultText = submitButton.querySelector('.default-text');
+                const loadingText = submitButton.querySelector('.loading-text');
+                
+                // Show loading state
+                defaultText.style.display = 'none';
+                loadingText.style.display = 'inline-block';
+                submitButton.disabled = true;
+                
+                try {
+                    // Prepare form data
+                    const formData = new FormData(form);
+                    const payload = new URLSearchParams(formData);
+                    
+                    // Submit booking
+                    const response = await fetch(form.action, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                            'X-CSRF-Token': csrfInput.value
+                        },
+                        body: payload,
+                        credentials: 'include'
+                    });
+                    
+                    // Handle response
+                    const result = await handleResponse(response, form);
+                    
+                    if (result.success) {
+                        showSuccess(result.message);
+                        form.reset();
+                    } else {
+                        throw new Error(result.message || 'Booking submission failed');
+                    }
+                } catch (error) {
+                    console.error('Submission Error:', error);
+                    showError(
+                        error.message || 'Failed to submit booking. Please try again or contact us.',
+                        form
+                    );
+                } finally {
+                    // Reset button state
+                    defaultText.style.display = 'inline-block';
+                    loadingText.style.display = 'none';
+                    submitButton.disabled = false;
+                }
+            });
+        }
+        
+        async function attemptCSRFTokenFetch() {
+            // For development, generate a mock token
+            // In production, replace with actual backend endpoints
+            try {
+                // Try actual endpoint first
+                const response = await fetch('/api/csrf-token', {
+                    method: 'GET',
+                    credentials: 'include',
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+
+                if (response.ok) {
+                    const contentType = response.headers.get('content-type');
+                    if (contentType && contentType.includes('application/json')) {
+                        const data = await response.json();
+                        if (data.token) return data.token;
+                    }
+                }
+            } catch (error) {
+                console.log('CSRF endpoint not available, using fallback');
+            }
+            
+            // Fallback: generate a temporary token for development
+            return 'dev-token-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+        }
+        
+        async function handleResponse(response, form) {
+            // Handle non-JSON responses
+            const contentType = response.headers.get('content-type');
+            if (!contentType || !contentType.includes('application/json')) {
+                const text = await response.text();
+                return {
+                    success: false,
+                    message: 'Unexpected response from server'
+                };
+            }
+            
+            const data = await response.json();
+            
+            // Handle successful responses
+            if (response.ok) {
+                return data;
+            }
+            
+            // Handle CSRF token errors specifically
+            if (response.status === 403 && data.error === 'Invalid CSRF token') {
+                return {
+                    success: false,
+                    message: 'Session expired. Please refresh the page and try again.'
+                };
+            }
+            
+            // Handle other error responses
+            return {
+                success: false,
+                message: data.message || 'Request failed with status ' + response.status
+            };
+        }
+        
+        // ========== UI Feedback Functions ==========
+        function showSuccess(message) {
+            // You can replace this with a more sophisticated notification system
+            alert(message);
+        }
+        
+        function showError(message, form) {
+            // Remove any existing error messages
+            const existingError = form.querySelector('.form-error');
+            if (existingError) existingError.remove();
+            
+            // Create error message
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'form-error';
+            errorDiv.innerHTML = `
+                <div class="error-content">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span>${message}</span>
+                </div>
+            `;
+            
+            // Insert in form
+            const formHeader = form.querySelector('.form-intro') || form;
+            formHeader.appendChild(errorDiv);
+            
+            // Auto-hide after 10 seconds
+            setTimeout(() => {
+                errorDiv.classList.add('fade-out');
+                setTimeout(() => errorDiv.remove(), 500);
+            }, 10000);
+        }
+        
+        function showWarning(message, form) {
+            // Remove any existing warnings
+            const existingWarning = form.querySelector('.form-warning');
+            if (existingWarning) existingWarning.remove();
+            
+            // Create warning message
+            const warningDiv = document.createElement('div');
+            warningDiv.className = 'form-warning';
+            warningDiv.innerHTML = `
+                <div class="warning-content">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <span>${message}</span>
+                </div>
+            `;
+            
+            // Insert in form
+            const formHeader = form.querySelector('.form-intro') || form;
+            formHeader.appendChild(warningDiv);
+            
+            // Auto-hide after 15 seconds
+            setTimeout(() => {
+                warningDiv.classList.add('fade-out');
+                setTimeout(() => warningDiv.remove(), 500);
+            }, 15000);
+        }
+        
+        // Helper function for package buttons
+        function scrollToForm() {
+            document.getElementById('booking').scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', async function() {
+    let csrfToken = 'dev-token-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+
+    // Try to get real CSRF token, but don't fail if unavailable
+    try {
+        const response = await fetch('/api/csrf-token');
+        if (response.ok) {
+            const contentType = response.headers.get('content-type');
+            if (contentType && contentType.includes('application/json')) {
+                const data = await response.json();
+                if (data.token) {
+                    csrfToken = data.token;
+                    console.log('CSRF token obtained successfully');
+                }
+            }
+        }
+    } catch (error) {
+        console.log('Using fallback CSRF token for development');
+    }
+    
+    // Handle contact form submission
+    const contactForm = document.getElementById('contact-form');
+    if (contactForm) {
+        contactForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const submitButton = this.querySelector('button[type="submit"]');
+            const originalText = submitButton.innerHTML;
+            
+            // Show loading state
+            submitButton.innerHTML = '<span>Sending...</span><i class="fas fa-spinner fa-spin"></i>';
+            submitButton.disabled = true;
+            
+            try {
+                const contactData = {
+                    name: document.getElementById('name').value,
+                    email: document.getElementById('email').value,
+                    phone: document.getElementById('phone').value,
+                    subject: document.getElementById('event-type').value,
+                    message: document.getElementById('message').value,
+                    _csrf: csrfToken
+                };
+                
+                const response = await fetch('/api/submit-contact', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-Token': csrfToken
+                    },
+                    body: JSON.stringify(contactData),
+                    credentials: 'include'
+                });
+                
+                let result;
+                const contentType = response.headers.get('content-type');
+                if (contentType && contentType.includes('application/json')) {
+                    result = await response.json();
+                } else {
+                    result = { 
+                        success: response.ok, 
+                        message: response.ok ? 'Message sent successfully!' : 'Failed to send message'
+                    };
+                }
+                
+                if (response.ok && result.success) {
+                    // Update CSRF token if provided
+                    if (result.csrfToken) {
+                        csrfToken = result.csrfToken;
+                    }
+
+                    // Get form data for toast
+                    const name = document.getElementById('name').value;
+                    const email = document.getElementById('email').value;
+                    const phone = document.getElementById('phone').value;
+                    
+                    // Show success toast
+                    showToast('success', name, false, email, phone);
+                    
+                    // Show success message
+                    submitButton.innerHTML = '<span>Message Sent!</span><i class="fas fa-check"></i>';
+                    submitButton.style.backgroundColor = '#28a745';
+                    
+                    // Reset form
+                    contactForm.reset();
+                    
+                    // Reset button after 3 seconds
+                    setTimeout(() => {
+                        submitButton.innerHTML = originalText;
+                        submitButton.style.backgroundColor = '';
+                        submitButton.disabled = false;
+                    }, 3000);
+                    } else {
+                        throw new Error(result.message || 'Failed to send message');
+                    }
+                } catch (error) {
+                    console.error('Error submitting contact form:', error);
+                    
+                    // Get form data for error toast
+                    const name = document.getElementById('name').value || 'Guest';
+                    
+                    // Show error toast
+                    showToast('error', name, false);
+                    
+                    submitButton.innerHTML = '<span>Failed to Send</span><i class="fas fa-times"></i>';
+                    submitButton.style.backgroundColor = '#dc3545';
+                    
+                    // Reset button after 3 seconds
+                    setTimeout(() => {
+                        submitButton.innerHTML = originalText;
+                        submitButton.style.backgroundColor = '';
+                        submitButton.disabled = false;
+                    }, 3000);
+                }
+            });
+        }
+    });
+</script>
+
+<script>
+    function showToast(type, name, isBooking = false, email = '', phone = '') {
+      // Create overlay
+      const overlay = document.createElement('div');
+      overlay.className = 'toast-overlay';
+      
+      // Create toast
+      const toast = document.createElement('div');
+      toast.className = `toast-notification ${type === 'error' ? 'toast-error' : ''}`;
+      
+      let icon = type === 'success' ? '✅' : '❌';
+      let title = type === 'success' ? 'Success!' : 'Oops! Something went wrong';
+      let message = '';
+      
+      if (type === 'success') {
+        if (isBooking) {
+          message = `
+            <p>Thank you, <strong>${name}</strong>! Your booking request has been submitted successfully.</p>
+            <p>We've received your inquiry and will get back to you within 24–48 hours to confirm your appointment details.</p>
+            <p>A confirmation has been sent to ${email}${phone ? ` and ${phone}` : ''}.</p>
+          `;
+        } else {
+          message = `
+            <p>Thank you, <strong>${name}</strong>! Your message has been sent successfully.</p>
+            <p>We've received your inquiry and will get back to you within 24–48 hours.</p>
+            <p>A confirmation has been sent to ${email}${phone ? ` and ${phone}` : ''}.</p>
+          `;
+        }
+      } else {
+        message = `
+          <p>We're sorry, but there was an issue processing your ${isBooking ? 'booking' : 'message'}.</p>
+          <p>Please try again in a few moments, or contact us directly:</p>
+          <p><strong>Phone:</strong> (123) 456-7890<br>
+             <strong>Email:</strong> info@amiphotography.com</p>
+          <p>We apologize for the inconvenience and appreciate your patience.</p>
+        `;
+      }
+      
+      toast.innerHTML = `
+        <div class="toast-icon">${icon}</div>
+        <h3>${title}</h3>
+        ${message}
+      `;
+      
+      // Add to page
+      document.body.appendChild(overlay);
+      document.body.appendChild(toast);
+      
+      // Show with animation
+      setTimeout(() => {
+        overlay.classList.add('show');
+        toast.classList.add('show');
+      }, 100);
+      
+      // Auto-hide after 10 seconds
+      setTimeout(() => {
+        hideToast(overlay, toast);
+      }, 10000);
+      
+      // Hide on overlay click
+      overlay.addEventListener('click', () => {
+        hideToast(overlay, toast);
+      });
+    }
+    
+    function hideToast(overlay, toast) {
+      overlay.classList.remove('show');
+      toast.classList.remove('show');
+      
+      setTimeout(() => {
+        if (overlay.parentNode) overlay.parentNode.removeChild(overlay);
+        if (toast.parentNode) toast.parentNode.removeChild(toast);
+      }, 500);
+    }
+    </script>
+</body>
+</html>
