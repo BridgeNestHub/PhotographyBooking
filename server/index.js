@@ -200,18 +200,20 @@ const noCache = (req, res, next) => {
 
 // ===== Database Connection =====
 mongoose.connect(process.env.MONGODB_URI, {
-  serverSelectionTimeoutMS: 5000,
-  socketTimeoutMS: 45000,
-  maxPoolSize: 50,
-  wtimeoutMS: 2500
-})
-.then(() => console.log('✅ MongoDB connected successfully'))
-.catch(err => {
-  console.error('❌ MongoDB connection error:', err);
-  process.exit(1);
-});
-mongoose.connection.on('error', err => {
-  console.error('MongoDB runtime error:', err);
+    serverSelectionTimeoutMS: 5000,
+    socketTimeoutMS: 45000,
+    maxPoolSize: 50,
+    wtimeoutMS: 2500
+  })
+  .then(() => console.log('✅ MongoDB connected successfully'))
+  .catch(err => {
+    console.error('❌ MongoDB connection error:', err);
+    console.log('⚠️ Server will continue running without database connection');
+    // Remove process.exit(1) to let server run without DB
+  });
+  
+  mongoose.connection.on('error', err => {
+    console.error('MongoDB runtime error:', err);
 });
 
 // ===== Authentication Middleware =====
