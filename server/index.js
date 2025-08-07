@@ -411,23 +411,15 @@ app.post('/api/admin/messages/:id/mark-read', csrfProtection, (req, res) => {
 });
 
 // ===== Email Configuration =====
-const emailTransporter = nodemailer.createTransporter({
-    // For Gmail
-    service: 'gmail',
+const emailTransporter = nodemailer.createTransport({
+    host: process.env.EMAIL_HOST,
+    port: process.env.EMAIL_PORT,
+    secure: process.env.EMAIL_SECURE === 'true', // true for 465, false for other ports
     auth: {
-      user: process.env.EMAIL_USER, // your email
-      pass: process.env.EMAIL_PASS  // your app password
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS
     }
-    
-    // For other email services, use SMTP:
-    // host: process.env.SMTP_HOST,
-    // port: process.env.SMTP_PORT,
-    // secure: true,
-    // auth: {
-    //   user: process.env.EMAIL_USER,
-    //   pass: process.env.EMAIL_PASS
-    // }
-  });
+});
   
   // Email templates
   const getContactEmailTemplate = (name, formData) => {
